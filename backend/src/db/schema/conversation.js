@@ -5,5 +5,10 @@ export const conversations = pgTable("conversations", {
   id: serial("id").primaryKey(),
 
   createdAt: timestamp("created_at").defaultNow().notNull(),
+
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
+
+
+
 
