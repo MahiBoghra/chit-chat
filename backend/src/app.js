@@ -24,3 +24,4 @@ app.use('/api/messages', messageRoutes);
 app.use(errorHandler);
 
 export default app;
+

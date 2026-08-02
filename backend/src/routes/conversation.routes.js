@@ -7,7 +7,9 @@ const router = Router();
 // Route to create a conversation between two users
 router.post('/', conversationController.createConversation);
 
-// Route to get all conversations for a specific user
+// Route to get all conversations for a specific user ,just like whats app's interface shows
 router.get('/:userId', conversationController.getUserConversations);
 
 export default router;
+
+

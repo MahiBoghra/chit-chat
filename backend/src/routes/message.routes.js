@@ -11,3 +11,4 @@ router.post('/', messageController.sendMessage);
 router.get('/:conversationId', messageController.getMessages);
 
 export default router;
+
