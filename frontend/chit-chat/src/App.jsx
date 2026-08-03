@@ -1,13 +1,33 @@
-// Path: frontend\chit-chat\src\App.jsx
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Chat from "./pages/Chat";
 
-
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-    </>
-  )
+// Guard helper component to protect paths
+function ProtectedRoute({ children }) {
+  const userId = localStorage.getItem("user_id");
+  return userId ? children : <Navigate to="/" />;
 }
 
-export default App
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route
+          path="/chat"
+          element={
+            <ProtectedRoute>
+              <Chat />
+            </ProtectedRoute>
+          }
+        />
+        {/* Fallback route redirection */}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;
