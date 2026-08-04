@@ -53,4 +53,23 @@ const login = async (req, res, next) => {
     }
 };
 
-export { signUp, login };
+const getAllUsers = async (req, res, next) => {
+    try {
+        const excludeUserId = Number(req.query.exclude_id);
+        if (!excludeUserId) {
+            throw new ApiError(400, "exclude_id query parameter is required.");
+        }
+        const usersList = await authService.getAllUsers(excludeUserId);
+        return res.status(200).json({
+            success: true,
+            users: usersList
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export { signUp, login, getAllUsers };
+
+
+

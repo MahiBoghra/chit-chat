@@ -11,4 +11,7 @@ router.post('/signup', authController.signUp); // Alias for lowercase
 // Login route
 router.post('/login', authController.login);
 
+// Get all other users route
+router.get('/users', authController.getAllUsers);
+
 export default router;

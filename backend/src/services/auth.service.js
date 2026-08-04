@@ -3,7 +3,7 @@ import "dotenv/config";
 import bcrypt from "bcrypt";
 import { db } from "../db/db.js";
 import { users } from "../db/schema/user.js";
-import { eq } from "drizzle-orm";
+import { eq, ne } from "drizzle-orm";
 import ApiError from "../utils/ApiError.js";
 
 const salt = Number(process.env.SALT_ROUNDS);
@@ -72,5 +72,18 @@ export const login = async (loginData) => {
 
     return userWithoutPassword;
 };
+
+export const getAllUsers = async (excludeUserId) => {
+    return await db
+        .select({
+            id: users.id,
+            username: users.username,
+            email: users.email
+        })
+        .from(users)
+        .where(ne(users.id, excludeUserId));
+};
+
+
 
 
