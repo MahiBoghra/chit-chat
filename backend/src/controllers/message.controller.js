@@ -1,4 +1,4 @@
-// Path: backend\src\controllers\message.controller.js
+// Path: backend/src/controllers/message.controller.js
 import * as messageService from "../services/message.service.js";
 import { sendMessageSchema, getMessagesSchema } from "../dto/message.dto.js";
 import ApiError from "../utils/ApiError.js";
@@ -32,6 +32,7 @@ export const sendMessage = async (req, res, next) => {
 
 /**
  * Controller to retrieve all messages in a conversation.
+ * Supports cursor-based pagination: ?before=<messageId>&limit=30
  */
 export const getMessages = async (req, res, next) => {
     try {
@@ -46,12 +47,22 @@ export const getMessages = async (req, res, next) => {
         }
 
         const { conversationId } = value;
-        const messages = await messageService.getMessages(conversationId);
+        const { limit = 20, before } = req.query;
+
+        const messages = await messageService.getMessages(
+            conversationId,
+            { limit: Number(limit), before: before ? Number(before) : undefined }
+        );
 
         return res.status(200).json({
             success: true,
             message: "Messages retrieved successfully",
-            data: messages
+            data: messages.messages,
+            meta: {
+                hasMore: messages.hasMore,
+                nextCursor: messages.nextCursor,
+                limit: Number(limit)
+            }
         });
     } catch (err) {
         next(err);
